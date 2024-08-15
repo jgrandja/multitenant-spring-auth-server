@@ -1,0 +1,5 @@
+rootProject.name = 'multitenant-spring-auth-server'
+
+include 'demo-authorizationserver'
+include 'demo-client'
+include 'messages-resource'

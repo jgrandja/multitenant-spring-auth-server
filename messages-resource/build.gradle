@@ -1,0 +1,22 @@
+plugins {
+	id "org.springframework.boot" version "3.3.2"
+	id "io.spring.dependency-management" version "1.1.0"
+	id "java"
+}
+
+group = project.rootProject.group
+version = project.rootProject.version
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+}
