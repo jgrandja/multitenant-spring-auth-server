@@ -17,9 +17,9 @@ package sample.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerAuthenticationManagerResolver;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -33,13 +33,16 @@ public class ResourceServerConfig {
 	// @formatter:off
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		JwtIssuerAuthenticationManagerResolver authenticationManagerResolver = JwtIssuerAuthenticationManagerResolver
+				.fromTrustedIssuers("http://localhost:9000/issuer1", "http://localhost:9000/issuer2");
 		http
 			.securityMatcher("/messages/**")
 				.authorizeHttpRequests(authorize ->
 						authorize.requestMatchers("/messages/**").hasAuthority("SCOPE_message.read")
 				)
 				.oauth2ResourceServer(oauth2ResourceServer ->
-						oauth2ResourceServer.jwt(Customizer.withDefaults())
+						oauth2ResourceServer
+								.authenticationManagerResolver(authenticationManagerResolver)
 				);
 		return http.build();
 	}

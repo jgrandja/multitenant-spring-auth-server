@@ -47,10 +47,27 @@ public class AuthorizationController {
 		this.messagesBaseUri = messagesBaseUri;
 	}
 
-	@GetMapping(value = "/authorize", params = "grant_type=authorization_code")
-	public String authorizationCodeGrant(Model model,
-			@RegisteredOAuth2AuthorizedClient("messaging-client-authorization-code")
-					OAuth2AuthorizedClient authorizedClient) {
+	@GetMapping(value = "/authorize", params = {"grant_type=authorization_code", "tenant=issuer1"})
+	public String authorizationCodeGrantIssuer1(Model model,
+												@RegisteredOAuth2AuthorizedClient("messaging-client-1-authorization-code")
+												OAuth2AuthorizedClient authorizedClient) {
+
+		String[] messages = this.webClient
+				.get()
+				.uri(this.messagesBaseUri)
+				.attributes(oauth2AuthorizedClient(authorizedClient))
+				.retrieve()
+				.bodyToMono(String[].class)
+				.block();
+		model.addAttribute("messages", messages);
+
+		return "index";
+	}
+
+	@GetMapping(value = "/authorize", params = {"grant_type=authorization_code", "tenant=issuer2"})
+	public String authorizationCodeGrantIssuer2(Model model,
+												@RegisteredOAuth2AuthorizedClient("messaging-client-2-authorization-code")
+												OAuth2AuthorizedClient authorizedClient) {
 
 		String[] messages = this.webClient
 				.get()
@@ -80,12 +97,26 @@ public class AuthorizationController {
 		return "index";
 	}
 
-	@GetMapping(value = "/authorize", params = {"grant_type=client_credentials"})
-	public String clientCredentialsGrant(Model model) {
+	@GetMapping(value = "/authorize", params = {"grant_type=client_credentials", "tenant=issuer1"})
+	public String clientCredentialsGrantIssuer1(Model model) {
 		String[] messages = this.webClient
 				.get()
 				.uri(this.messagesBaseUri)
-				.attributes(clientRegistrationId("messaging-client-client-credentials"))
+				.attributes(clientRegistrationId("messaging-client-1-client-credentials"))
+				.retrieve()
+				.bodyToMono(String[].class)
+				.block();
+		model.addAttribute("messages", messages);
+
+		return "index";
+	}
+
+	@GetMapping(value = "/authorize", params = {"grant_type=client_credentials", "tenant=issuer2"})
+	public String clientCredentialsGrantIssuer2(Model model) {
+		String[] messages = this.webClient
+				.get()
+				.uri(this.messagesBaseUri)
+				.attributes(clientRegistrationId("messaging-client-2-client-credentials"))
 				.retrieve()
 				.bodyToMono(String[].class)
 				.block();
