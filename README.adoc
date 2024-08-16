@@ -1,0 +1,13 @@
+[[demo-sample]]
+== Demo Sample
+
+The demo sample provides custom configuration for supporting multi-tenancy in Spring Authorization Server.
+
+[[run-demo-sample]]
+=== Run the Sample
+
+* Run Authorization Server -> `./gradlew -b demo-authorizationserver/build.gradle bootRun`
+* Run Client -> `./gradlew -b demo-client/build.gradle bootRun`
+* Run Resource Server -> `./gradlew -b messages-resource/build.gradle bootRun`
+* Go to `http://127.0.0.1:8080`
+** Login with credentials -> user1 \ password
