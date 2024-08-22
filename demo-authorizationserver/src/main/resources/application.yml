@@ -1,6 +1,11 @@
 server:
   port: 9000
 
+spring:
+  h2:
+    console:
+      enabled: true
+
 logging:
   level:
     root: INFO
